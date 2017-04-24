@@ -23,7 +23,7 @@ class Baseball extends CircleSprite {
 	public var trueVelocity(default, null):Vec2;
 	//var cbType:CbType;
 	public function new(X:Float = 0, Y:Float = 0) {
-		super(X, Y, "assets/images/baseball.png");
+		super(X, Y, "assets/images/ball.png");
 		//cbType = new CbType();
 		
 		
@@ -38,6 +38,7 @@ class Baseball extends CircleSprite {
 
 		FlxG.console.registerObject("ball", this);
 
+		FlxG.watch.add(this, 'orbitAngle', 'radians');
 		FlxG.watch.add(this, 'orbitDegrees', 'degrees');
 		#end
 		
@@ -99,21 +100,17 @@ class Baseball extends CircleSprite {
 	
 	//Get angle in RADIANS around the planet
 	function get_orbitAngle():Float {
-		
-		
-		return body.position.sub(GameObjects.planet.body.position, true).angle;
+		return  (Math.PI / 2) - body.position.sub(GameObjects.planet.body.position, true).angle;
+
 	}
+
 	//Get angle in DEGREES around the planet
 	function get_orbitDegrees():Float {
-		return 90 - orbitAngle * FlxAngle.TO_DEG;
+		return orbitAngle * FlxAngle.TO_DEG;
 	}
 	
 	//Returns the angle in RADIANS of current velocity
 	function get_velocityAngle():Float {
 		return body.velocity.angle;
 	}
-
-
-
-
 }
