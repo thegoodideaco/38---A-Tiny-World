@@ -32,7 +32,7 @@
 	<assets path="assets" />
 	
 	
-	<assets type="image" path="../Resources/main-assets/images" rename="assets/images" />
+	<assets type="image" path="Resources/main-assets/images" rename="assets/images" />
 	<assets type="sound" path="assets/sounds/bounce.ogg" id="bounce" />
 
 	<!-- _______________________________ Libraries ______________________________ -->
