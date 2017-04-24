@@ -32,9 +32,14 @@ class PlayState extends FlxState {
 	override public function create():Void {
 		super.create();
 		
+		GameObjects.playState = this;
 		
+		//allow this state to run behind in the background
+		this.persistentUpdate = true;
 		
-		
+		//show splash
+		this.openSubState(new MenuState());
+
 
 		add(sky = new FlxSprite(0, 0, "assets/images/sky.png"));
 		sky.cameras = [Cameras.skyCam];
@@ -42,16 +47,16 @@ class PlayState extends FlxState {
 		add(clouds = new FlxSpriteGroup());
 		clouds.cameras = [Cameras.planetCam];
 
-		add(planet = new Planet(FlxG.width >> 1, 1565));
-		add(ball = new Baseball(FlxG.width / 2, FlxG.height / 2));
+		add(planet = GameObjects.planet = new Planet(FlxG.width >> 1, 1565));
+		add(ball = GameObjects.ball = new Baseball(FlxG.width / 2, FlxG.height / 2));
 
 		planet.cameras = ball.cameras = [Cameras.planetCam];
 
 		Cameras.planetCam.follow(ball, FlxCameraFollowStyle.LOCKON, .5);
 
 		GameObjects.sky = sky;
-		GameObjects.ball = ball;
-		GameObjects.planet = planet;
+		//GameObjects.ball = ball;
+		//GameObjects.planet = planet;
 
 		addContent();
 	}
@@ -113,21 +118,17 @@ class PlayState extends FlxState {
 	
 	
 	public function startGame():Void {
-				FlxNapeSpace.space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.ANY, CbTypes.ball, CbTypes.cloud.including(CbTypes.planet), function(cb:InteractionCallback){
+		FlxNapeSpace.space.listeners.add(new InteractionListener(CbEvent.BEGIN, InteractionType.ANY, CbTypes.ball, CbTypes.cloud.including(CbTypes.planet), function(cb:InteractionCallback) {
 			var spr:FlxNapeSprite = cb.int2.userData.sprite;
 			
-			if (Std.is(spr, Cloud)){
+			if (Std.is(spr, Cloud)) {
 				spr.kill();
 			}
 			
-			if (Std.is(spr, Planet)){
-				FlxG.sound.play("bounce");
+			if (Std.is(spr, Planet)) {
+				//FlxG.sound.play("bounce");
 				GameObjects.ball.body.velocity.muleq(.8);
 			}
-			
-			
-			//trace(Std.is(cb.int2.userData.sprite, Cloud));
-			//cloud.kill();
 			
 			
 		}));

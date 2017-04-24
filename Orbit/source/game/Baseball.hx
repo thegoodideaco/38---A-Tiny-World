@@ -4,9 +4,7 @@ import flixel.FlxG;
 import flixel.math.FlxAngle;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import game.GameObjects;
-import nape.callbacks.CbType;
 import nape.geom.Vec2;
-import nape.phys.BodyType;
 import phys.CbTypes;
 import phys.InteractionFilters;
 import system.Cameras;
@@ -18,30 +16,45 @@ import system.Settings;
  */
 class Baseball extends CircleSprite {
 	
+	var _oldAngle(default, null):Float = 0;
+	public var orbitAngle(get, null):Float;
+	public var velocityAngle(get, null):Float;
+	public var orbitDegrees(get, null):Float;
 	public var trueVelocity(default, null):Vec2;
 	//var cbType:CbType;
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y, "assets/images/baseball.png");
 		//cbType = new CbType();
 		
-		body.setShapeFilters(InteractionFilters.attracted);
+		
 		setDrag(.9999, .9999);
 		trueVelocity = body.velocity.copy();
 		
-		#if FLX_DEBUG
+		body.setShapeFilters(InteractionFilters.attracted);
+		circle.cbTypes.add(CbTypes.ball);
 		
+		#if FLX_DEBUG
+		//Add debugging
+
 		FlxG.console.registerObject("ball", this);
-		FlxG.watch.add(this, 'trueVelocity', 'speed');
+
+		FlxG.watch.add(this, 'orbitDegrees', 'degrees');
 		#end
 		
-		circle.cbTypes.add(CbTypes.ball);
 	}
 	
 	
 	override public function update(elapsed:Float):Void {
 		
 		//update true velocity
-		trueVelocity.set(body.velocity).angle = -90 * FlxAngle.TO_RAD;
+		var totalRadians:Float = body.position.sub(GameObjects.planet.body.position, true).angle - _oldAngle;
+		var circumfrence:Float = 2 * body.position.sub(GameObjects.planet.body.position, true).length * Math.PI;
+		
+		var distanceMoved:Float = ((totalRadians * FlxAngle.TO_DEG) / 360) * circumfrence;
+		trueVelocity.x += distanceMoved;
+		
+		_oldAngle = totalRadians;
+		
 		
 		if (FlxG.keys.justPressed.SPACE) {
 			bounce();
@@ -63,16 +76,6 @@ class Baseball extends CircleSprite {
 			
 			force.dispose();
 		}
-		//
-		
-		
-		/*if (Math.abs(body.angularVel) > 0){
-			//body.angularVel -= (body.angularVel - (body.angularVel * 0.0015));
-		}
-		
-		if (body.velocity.length > 0){
-			body.velocity.muleq(1/1.00000001);
-		}*/
 		
 		super.update(elapsed);
 	}
@@ -81,18 +84,36 @@ class Baseball extends CircleSprite {
 	 * Make the ball go slower
 	 * @param	Damage
 	 */
-	override public function hurt(Damage:Float):Void 
-	{
+	override public function hurt(Damage:Float):Void {
 		body.velocity.muleq(0.9999);
 		//super.hurt(Damage);
 	}
 	
-	public function bounce() 
-	{
+	//Adds bounce to the ball
+	public function bounce() {
 		var force:Vec2 = body.position.sub(GameObjects.planet.body.position);
-			force.length = Settings.jumpStrength;
-			body.applyImpulse(force);
-			force.dispose();
+		force.length = Settings.jumpStrength;
+		body.applyImpulse(force);
+		force.dispose();
 	}
 	
+	//Get angle in RADIANS around the planet
+	function get_orbitAngle():Float {
+		
+		
+		return body.position.sub(GameObjects.planet.body.position, true).angle;
+	}
+	//Get angle in DEGREES around the planet
+	function get_orbitDegrees():Float {
+		return 90 - orbitAngle * FlxAngle.TO_DEG;
+	}
+	
+	//Returns the angle in RADIANS of current velocity
+	function get_velocityAngle():Float {
+		return body.velocity.angle;
+	}
+
+
+
+
 }

@@ -1,6 +1,5 @@
 package game;
 import flixel.FlxSprite;
-import flixel.addons.display.FlxSpriteAniRot;
 
 /**
  * ...
@@ -11,5 +10,6 @@ class GameObjects {
 	public static var planet:Planet;
 	public static var ball:Baseball;
 	public static var sky:FlxSprite;
+	public static var playState:PlayState;
 	
 }

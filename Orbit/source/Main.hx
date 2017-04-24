@@ -5,7 +5,6 @@ import flixel.FlxGame;
 import flixel.FlxState;
 import flixel.addons.nape.FlxNapeSpace;
 import nape.geom.Vec2;
-import openfl.Lib;
 import openfl.display.Sprite;
 import phys.CbTypes;
 import phys.InteractionFilters;
@@ -16,6 +15,17 @@ class Main extends Sprite {
 	public function new() {
 		super();
 		
+		/**
+		 * HXCPP DEBUGGING
+		 */
+		#if (debug && cpp && USING_VS_DEBUGGER && !telemetry)
+		new debugger.HaxeRemote(true, "localhost");
+		#end
+
+		
+		/**
+		 * INIT PROJECT
+		 */
 		FlxG.signals.preStateCreate.addOnce(function(s:FlxState) {
 			FlxG.autoPause = false;
 			Cameras.init();
@@ -32,14 +42,15 @@ class Main extends Sprite {
 			
 		});
 		
+		
+		/**
+		 * ADD NEW GAME
+		 */
 		addChild(new FlxGame(0, 0, PlayState, 1, 60, 60, true, false));
-		
-		
 	}
 
 
 	#if FLX_DEBUG
-
 	function initDebug():Void {
 		FlxG.console.autoPause = false;
 		FlxG.console.registerClass(Vec2);
@@ -47,9 +58,7 @@ class Main extends Sprite {
 		FlxG.console.registerClass(InteractionFilters);
 		FlxG.console.registerClass(Cameras);
 		FlxG.console.registerClass(Settings);
-
 	}
-
 	#end
 
 }

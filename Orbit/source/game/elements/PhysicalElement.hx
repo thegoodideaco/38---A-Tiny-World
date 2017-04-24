@@ -3,11 +3,8 @@ package game.elements;
 import flixel.addons.nape.FlxNapeSpace;
 import flixel.addons.nape.FlxNapeSprite;
 import flixel.system.FlxAssets.FlxGraphicAsset;
-import nape.callbacks.CbEvent;
 import nape.callbacks.CbType;
 import nape.callbacks.InteractionCallback;
-import nape.callbacks.InteractionListener;
-import nape.callbacks.InteractionType;
 import nape.phys.BodyType;
 import nape.shape.Shape;
 import phys.CbTypes;
@@ -21,6 +18,7 @@ class PhysicalElement extends FlxNapeSprite {
 	public var cbType:CbType;
 	public var onCollide:InteractionCallback -> Void;
 	public var shape(default, null):Shape;
+
 	public function new(X:Float = 0, Y:Float = 0, ?SimpleGraphic:FlxGraphicAsset, CreateRectangularBody:Bool = true, EnablePhysics:Bool = true, Kinematic:Bool = false, ?OnCollide:InteractionCallback -> Void) {
 		super(X, Y, SimpleGraphic, CreateRectangularBody, EnablePhysics);
 		body.userData.sprite = this;

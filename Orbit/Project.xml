@@ -38,6 +38,15 @@
 	<!-- _______________________________ Libraries ______________________________ -->
 
 	<haxelib name="flixel" />
+	
+	<!--For Debugging-->
+	<haxelib name="hxtelemetry" if="telemetry" unless="USING_VS_DEBUGGER" />
+    <haxedef name="HXCPP_STACK_TRACE" if="telemetry" unless="USING_VS_DEBUGGER" />
+    <haxedef name="HXCPP_TELEMETRY" if="telemetry" unless="USING_VS_DEBUGGER" />
+    <haxelib name="hxcpp-debugger" if="USING_VS_DEBUGGER" unless="telemetry" />
+    <haxedef name="HXCPP_DEBUGGER" if="USING_VS_DEBUGGER" unless="telemetry" />
+    <haxedef name="HXCPP_STACK_TRACE" if="USING_VS_DEBUGGER" unless="telemetry" />
+
 
 	<!--In case you want to use the addons package-->
 	<haxelib name="flixel-addons" />

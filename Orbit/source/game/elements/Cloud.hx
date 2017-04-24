@@ -1,14 +1,7 @@
 package game.elements;
 
-import nape.callbacks.CbType;
-import nape.phys.Body;
 import flixel.FlxG;
-import flixel.addons.nape.FlxNapeSpace;
-import flixel.addons.nape.FlxNapeSprite;
 import flixel.system.FlxAssets.FlxGraphicAsset;
-import nape.callbacks.InteractionCallback;
-import nape.phys.BodyType;
-import phys.CbTypes;
 
 /**
  * ...

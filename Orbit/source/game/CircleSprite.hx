@@ -15,6 +15,7 @@ import nape.shape.Circle;
 class CircleSprite extends FlxNapeSprite {
 	public var circle:Circle;
 	public var cbType:CbType;
+
 	public function new(X:Float = 0, Y:Float = 0, ?SimpleGraphic:FlxGraphicAsset, Radius:Float = 15, ?bodyType:BodyType) {
 		super(X, Y, SimpleGraphic, false, false);
 		
@@ -34,7 +35,6 @@ class CircleSprite extends FlxNapeSprite {
 		}
 		
 		physicsEnabled = true;
-		
 		
 		
 	}

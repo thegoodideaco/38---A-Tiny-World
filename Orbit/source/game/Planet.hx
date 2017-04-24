@@ -1,8 +1,6 @@
 package game;
 
 import flixel.FlxG;
-import flixel.addons.nape.FlxNapeSpace;
-import flixel.math.FlxAngle;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import nape.geom.Vec2;
 import nape.phys.Body;
