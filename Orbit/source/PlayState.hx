@@ -20,6 +20,7 @@ import nape.callbacks.InteractionType;
 import nape.geom.Vec2;
 import phys.CbTypes;
 import system.Cameras;
+import ui.UIDisplay;
 
 class PlayState extends FlxState {
 
@@ -28,6 +29,10 @@ class PlayState extends FlxState {
 	public var ball:Baseball;
 
 	public var clouds:FlxSpriteGroup;
+	
+	public var hud:UIDisplay;
+	
+	
 
 	override public function create():Void {
 		super.create();
@@ -59,6 +64,11 @@ class PlayState extends FlxState {
 		//GameObjects.planet = planet;
 
 		addContent();
+		
+		
+		
+		
+		add(hud = new UIDisplay());
 	}
 
 	function addContent() {
@@ -79,6 +89,15 @@ class PlayState extends FlxState {
 	override public function update(elapsed:Float):Void {
 
 		Cameras.planetCam.angle = 90 - (ball.body.position.sub(planet.body.position, true).muleq(-1).angle * FlxAngle.TO_DEG);
+
+
+		if(FlxG.mouse.wheel != 0){
+			Cameras.planetCam.zoom += FlxG.mouse.wheel * .5;
+		}
+
+
+
+
 		super.update(elapsed);
 	}
 

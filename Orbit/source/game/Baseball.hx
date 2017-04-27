@@ -2,12 +2,14 @@ package game;
 
 import flixel.FlxG;
 import flixel.math.FlxAngle;
+import flixel.math.FlxMath;
 import flixel.system.FlxAssets.FlxGraphicAsset;
 import game.GameObjects;
 import nape.geom.Vec2;
 import phys.CbTypes;
 import phys.InteractionFilters;
 import system.Cameras;
+import system.PlayerData;
 import system.Settings;
 
 /**
@@ -15,8 +17,10 @@ import system.Settings;
  * @author Jonathan Snyder
  */
 class Baseball extends CircleSprite {
-	
-	var _oldAngle(default, null):Float = 0;
+	public var circumfrence(default, null):Float;
+	public var totalDistance(default, null):Float = 0;
+	public var totalDegrees(get, null):Float;
+	var _oldDegrees(default, null):Float = 360;
 	public var orbitAngle(get, null):Float;
 	public var velocityAngle(get, null):Float;
 	public var orbitDegrees(get, null):Float;
@@ -32,30 +36,58 @@ class Baseball extends CircleSprite {
 		
 		body.setShapeFilters(InteractionFilters.attracted);
 		circle.cbTypes.add(CbTypes.ball);
+		circumfrence = 2 * GameObjects.planet.circle.radius * Math.PI;
+		
+		
+		//_oldDegrees = orbitDegrees;
+		
 		
 		#if FLX_DEBUG
 		//Add debugging
 
 		FlxG.console.registerObject("ball", this);
 
-		FlxG.watch.add(this, 'orbitAngle', 'radians');
+		//FlxG.watch.add(this, 'orbitAngle', 'radians');
 		FlxG.watch.add(this, 'orbitDegrees', 'degrees');
+		FlxG.watch.add(this, 'trueVelocity', 'tv');
+		FlxG.watch.add(this, 'totalDistance', 'distance');
+		FlxG.watch.add(this, 'totalDegrees', 'totaldeg');
 		#end
 		
 	}
 	
 	
 	override public function update(elapsed:Float):Void {
+		var fromPlanet:Vec2 = body.position.sub(GameObjects.planet.body.position);
 		
-		//update true velocity
-		var totalRadians:Float = body.position.sub(GameObjects.planet.body.position, true).angle - _oldAngle;
-		var circumfrence:Float = 2 * body.position.sub(GameObjects.planet.body.position, true).length * Math.PI;
+		//set a max length
+		if (fromPlanet.length > GameObjects.planet.radius + 1000){
+			//fromPlanet.length =  GameObjects.planet.radius + 1000;
+			fromPlanet.length = 100;
+			body.applyImpulse(fromPlanet.muleq( -1));
+		}
 		
-		var distanceMoved:Float = ((totalRadians * FlxAngle.TO_DEG) / 360) * circumfrence;
-		trueVelocity.x += distanceMoved;
+		//body.position.set(GameObjects.planet.body.position.add(fromPlanet, true));
 		
-		_oldAngle = totalRadians;
 		
+		trueVelocity.x = orbitDegrees - _oldDegrees;
+		//if it made a complete rotation and reset, we need to adjust the difference
+		if (_oldDegrees > orbitDegrees){
+			if ((_oldDegrees - orbitDegrees) > 180){
+				trueVelocity.x += 360;
+			}else{
+				
+			}
+		}
+		
+		//trueVelocity.x *= elapsed;
+		circumfrence = 2 * Vec2.distance(GameObjects.planet.body.position, body.position) * Math.PI;
+		var curSpeed = (FlxMath.bound(trueVelocity.x, 0) / 360) * circumfrence;
+		totalDistance += curSpeed;
+		PlayerData.totalDistance = curSpeed;
+		PlayerData.totalDegrees = totalDegrees;
+		
+		_oldDegrees = orbitDegrees;
 		
 		if (FlxG.keys.justPressed.SPACE) {
 			bounce();
@@ -100,7 +132,9 @@ class Baseball extends CircleSprite {
 	
 	//Get angle in RADIANS around the planet
 	function get_orbitAngle():Float {
-		return  (Math.PI / 2) - body.position.sub(GameObjects.planet.body.position, true).angle;
+		var a = body.position.sub(GameObjects.planet.body.position, true).rotate(90 * FlxAngle.TO_RAD).angle;
+		if (a < 0) a += (Math.PI * 2);
+		return a;
 
 	}
 
@@ -113,4 +147,10 @@ class Baseball extends CircleSprite {
 	function get_velocityAngle():Float {
 		return body.velocity.angle;
 	}
+	
+	function get_totalDegrees():Float 
+	{
+		return (totalDistance / circumfrence) * 360;
+	}
+	
 }

@@ -60,7 +60,7 @@ class Planet extends CircleSprite {
 		 */
 		var b:Body = GameObjects.ball.body;
 		var f:Vec2 = GameObjects.planet.body.position.sub(GameObjects.ball.body.position);
-		f.length = Settings.gravityForce;
+		//f.length = Settings.\;
 		b.force.set(f);
 	}
 	
