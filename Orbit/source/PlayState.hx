@@ -135,16 +135,6 @@ class PlayState extends FlxState {
 			
 			
 			_m2.concat(_m);
-			//_m2.translate(Cameras.debugCam.scroll.x, Cameras.debugCam.scroll.y);
-			
-			//var p:Point = _m.transformPoint(new Point(Cameras.debugCam.scroll.x + FlxG.mouse.screenX, Cameras.debugCam.scroll.y + FlxG.mouse.screenY));
-
-			//Cameras.debugCam.trueMousePosition.set(_m.tx,_m.ty);
-			
-			//_m.copyFrom(FlxNapeSpace.shapeDebug.display.transform.matrix);
-			//var t:Transform = FlxNapeSpace.shapeDebug.display.transform;
-			
-			//_m.rotate(Math.PI / 12);
 			FlxNapeSpace.shapeDebug.transform.reset().setAs(_m.a, _m.b, _m.c, _m.d, _m.tx, _m.ty);
 			FlxG.watch.add(FlxNapeSpace.shapeDebug, "transform");
 		}

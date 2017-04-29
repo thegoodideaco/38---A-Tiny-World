@@ -4,6 +4,8 @@ import flixel.FlxBasic;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.math.FlxPoint;
+import game.GameObjects;
+import system.Cameras;
 
 /**
  * Allows for panning and (soon) zooming of the camera
@@ -59,7 +61,7 @@ class CameraController extends FlxBasic {
 				
 				camera.zoom += FlxG.mouse.wheel * (zoomSpeed * (camera.zoom / camera.initialZoom));
 				camera.setSize(Std.int(FlxG.width / (camera.zoom / camera.initialZoom)), Std.int(FlxG.height / (camera.zoom / camera.initialZoom)));
-				
+				//camera.focusOn(Cameras.debugCam.trueMousePosition);
 				
 			}
 			

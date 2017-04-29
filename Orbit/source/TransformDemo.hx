@@ -10,6 +10,7 @@ import flixel.math.FlxAngle;
 import flixel.math.FlxMatrix;
 import flixel.util.FlxColor;
 import nape.geom.Vec2;
+import system.Cameras;
 
 
 class TransformDemo extends FlxState {
@@ -18,7 +19,7 @@ class TransformDemo extends FlxState {
 
 	override public function create():Void {
 		super.create();
-		//cameras = [Cameras.uiCam];
+		cameras = [Cameras.uiCam];
 
 		add(_parent = new FlxSprite(100, 100).makeGraphic(120, 120, FlxColor.YELLOW));
 
