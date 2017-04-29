@@ -42,7 +42,6 @@ class Cameras {
 		debugCam = new DebugCamera();
 		
 		FlxG.console.registerObject("dcam", debugCam);
-		FlxG.watch.add(Cameras, "debugCam");
 		#end
 	}
 	

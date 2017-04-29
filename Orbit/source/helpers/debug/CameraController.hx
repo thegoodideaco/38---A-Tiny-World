@@ -27,8 +27,6 @@ class CameraController extends FlxBasic {
 			camera = TargetCamera;
 		}
 		
-		FlxG.watch.add(this, "difference", "camera pan distance");
-		
 	}
 	
 	

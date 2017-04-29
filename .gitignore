@@ -2,6 +2,12 @@
 Thumbs.db
 ehthumbs.db
 
+# Export Folder
+Orbit/export/
+Orbit/.idea/
+
+
+
 # Folder config file
 Desktop.ini
 

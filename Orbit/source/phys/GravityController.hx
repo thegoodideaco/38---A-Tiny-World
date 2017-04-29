@@ -35,7 +35,7 @@ class GravityController {
 		#if FLX_DEBUG
 		
 		
-		FlxG.watch.add(this, "distance", "distance");
+		//FlxG.watch.add(this, "distance", "distance");
 		
 		#end
 	}

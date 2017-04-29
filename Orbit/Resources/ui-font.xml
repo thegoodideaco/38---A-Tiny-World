@@ -1,0 +1,26 @@
+<font>
+	<info face="ui-font" size="98" bold="0" italic="0" />
+	<common lineHeight="98" scaleW="210" scaleH="220" pages="1" />
+	<pages>
+		<page id="0" file="ui-font.png" />
+	</pages>
+	<chars count="15">
+		<char id="48" x="108" y="0" width="50" height="69" xoffset="0" yoffset="29" xadvance="55" /><!-- 0 -->
+		<char id="49" x="153" y="141" width="42" height="70" xoffset="0" yoffset="28" xadvance="47" /><!-- 1 -->
+		<char id="50" x="102" y="140" width="50" height="69" xoffset="0" yoffset="29" xadvance="55" /><!-- 2 -->
+		<char id="51" x="153" y="70" width="50" height="70" xoffset="0" yoffset="28" xadvance="55" /><!-- 3 -->
+		<char id="52" x="0" y="0" width="56" height="79" xoffset="0" yoffset="29" xadvance="61" /><!-- 4 -->
+		<char id="53" x="51" y="80" width="50" height="70" xoffset="0" yoffset="28" xadvance="55" /><!-- 5 -->
+		<char id="54" x="0" y="80" width="50" height="69" xoffset="0" yoffset="29" xadvance="55" /><!-- 6 -->
+		<char id="55" x="102" y="70" width="50" height="69" xoffset="0" yoffset="28" xadvance="55" /><!-- 7 -->
+		<char id="56" x="57" y="0" width="50" height="69" xoffset="0" yoffset="29" xadvance="55" /><!-- 8 -->
+		<char id="57" x="0" y="150" width="50" height="69" xoffset="0" yoffset="29" xadvance="55" /><!-- 9 -->
+		<char id="44" x="159" y="0" width="27" height="41" xoffset="0" yoffset="67" xadvance="32" /><!-- , -->
+		<char id="46" x="187" y="0" width="22" height="31" xoffset="0" yoffset="67" xadvance="27" /><!-- . -->
+		<char id="730" x="51" y="151" width="35" height="41" xoffset="0" yoffset="-3" xadvance="40" /><!-- ˚ -->
+		<char id="32" x="0" y="0" width="0" height="0" xoffset="0" yoffset="0" xadvance="34" /><!--   -->
+		<char id="9" x="0" y="0" width="0" height="0" xoffset="0" yoffset="0" xadvance="272" /><!-- 	 -->
+	</chars>
+	<kernings count="0">
+	</kernings>
+</font>

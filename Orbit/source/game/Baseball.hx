@@ -25,7 +25,6 @@ class Baseball extends CircleSprite {
 	public var velocityAngle(get, null):Float;
 	public var orbitDegrees(get, null):Float;
 	public var trueVelocity(default, null):Vec2;
-	//var cbType:CbType;
 	public function new(X:Float = 0, Y:Float = 0) {
 		super(X, Y, "assets/images/ball.png");
 		//cbType = new CbType();
@@ -37,18 +36,11 @@ class Baseball extends CircleSprite {
 		body.setShapeFilters(InteractionFilters.attracted);
 		circle.cbTypes.add(CbTypes.ball);
 		circumfrence = 2 * GameObjects.planet.circle.radius * Math.PI;
-		
-		
-		//_oldDegrees = orbitDegrees;
-		
+
 		
 		#if FLX_DEBUG
 		//Add debugging
-
 		FlxG.console.registerObject("ball", this);
-
-		//FlxG.watch.add(this, 'orbitAngle', 'radians');
-		FlxG.watch.add(this, 'orbitDegrees', 'degrees');
 		FlxG.watch.add(this, 'trueVelocity', 'tv');
 		FlxG.watch.add(this, 'totalDistance', 'distance');
 		FlxG.watch.add(this, 'totalDegrees', 'totaldeg');
