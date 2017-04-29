@@ -1,5 +1,6 @@
 package;
 
+import helpers.DragThrowController;
 import flixel.FlxCamera.FlxCameraFollowStyle;
 import flixel.FlxCamera;
 import flixel.FlxG;
@@ -13,16 +14,22 @@ import game.Baseball;
 import game.GameObjects;
 import game.Planet;
 import game.elements.Cloud;
+import helpers.debug.CameraController;
 import nape.callbacks.CbEvent;
 import nape.callbacks.InteractionCallback;
 import nape.callbacks.InteractionListener;
 import nape.callbacks.InteractionType;
 import nape.geom.Vec2;
+import openfl.geom.Matrix;
+import openfl.geom.Point;
+import openfl.geom.Transform;
 import phys.CbTypes;
+import phys.GravityController;
 import system.Cameras;
 import ui.UIDisplay;
 
 class PlayState extends FlxState {
+	public var gravityController:GravityController;
 
 	public var sky:FlxSprite;
 	public var planet:Planet;
@@ -33,7 +40,6 @@ class PlayState extends FlxState {
 	public var hud:UIDisplay;
 	
 	
-
 	override public function create():Void {
 		super.create();
 		
@@ -46,7 +52,7 @@ class PlayState extends FlxState {
 		this.openSubState(new MenuState());
 
 
-		add(sky = new FlxSprite(0, 0, "assets/images/sky.png"));
+		add(sky = GameObjects.sky = new FlxSprite(0, 0, "assets/images/sky.png"));
 		sky.cameras = [Cameras.skyCam];
 
 		add(clouds = new FlxSpriteGroup());
@@ -58,17 +64,44 @@ class PlayState extends FlxState {
 		planet.cameras = ball.cameras = [Cameras.planetCam];
 
 		Cameras.planetCam.follow(ball, FlxCameraFollowStyle.LOCKON, .5);
-
-		GameObjects.sky = sky;
-		//GameObjects.ball = ball;
-		//GameObjects.planet = planet;
+		
+		
+		gravityController = new GravityController();
+		
 
 		addContent();
 		
 		
-		
-		
 		add(hud = new UIDisplay());
+
+		gravityController.init();
+
+		#if FLX_DEBUG
+		add(new DragThrowController(FlxNapeSpace.space, null, false));
+		add(new CameraController(Cameras.debugCam));
+		
+		planet.cameras = ball.cameras = clouds.cameras = [Cameras.planetCam, Cameras.debugCam];
+		
+		
+		FlxG.watch.add(ball.body, "position", "ballxy");
+		
+		
+		//show debug cam
+		Cameras.toggleDebugView();
+		
+		//turn on nape debug
+		FlxNapeSpace.drawDebug = true;
+		
+		//add transform to console
+		FlxG.console.registerObject("transform", FlxNapeSpace.shapeDebug.transform);
+		
+		//track debug camera
+		FlxG.debugger.track(Cameras.debugCam);
+		
+		
+		#end
+		
+		
 	}
 
 	function addContent() {
@@ -89,14 +122,43 @@ class PlayState extends FlxState {
 	override public function update(elapsed:Float):Void {
 
 		Cameras.planetCam.angle = 90 - (ball.body.position.sub(planet.body.position, true).muleq(-1).angle * FlxAngle.TO_DEG);
+		
+		if (FlxNapeSpace.drawDebug) {
+			var _m:Matrix = new Matrix();
+			
+			_m.translate(-Cameras.debugCam.scroll.x, -Cameras.debugCam.scroll.y);
+			_m.scale(Cameras.debugCam.totalScaleX, Cameras.debugCam.totalScaleY);
+			
+			
+			var _m2:Matrix = new Matrix();
+			_m2.translate(FlxG.mouse.screenX - _m.tx, FlxG.mouse.screenY - _m.ty);
+			
+			
+			_m2.concat(_m);
+			//_m2.translate(Cameras.debugCam.scroll.x, Cameras.debugCam.scroll.y);
+			
+			//var p:Point = _m.transformPoint(new Point(Cameras.debugCam.scroll.x + FlxG.mouse.screenX, Cameras.debugCam.scroll.y + FlxG.mouse.screenY));
 
-
-		if(FlxG.mouse.wheel != 0){
-			Cameras.planetCam.zoom += FlxG.mouse.wheel * .5;
+			//Cameras.debugCam.trueMousePosition.set(_m.tx,_m.ty);
+			
+			//_m.copyFrom(FlxNapeSpace.shapeDebug.display.transform.matrix);
+			//var t:Transform = FlxNapeSpace.shapeDebug.display.transform;
+			
+			//_m.rotate(Math.PI / 12);
+			FlxNapeSpace.shapeDebug.transform.reset().setAs(_m.a, _m.b, _m.c, _m.d, _m.tx, _m.ty);
+			FlxG.watch.add(FlxNapeSpace.shapeDebug, "transform");
 		}
-
-
-
+		
+		
+		//apply a constant force
+		GameObjects.playState.gravityController.applyGravity();
+		
+		
+		#if FLX_DEBUG
+		if (FlxG.keys.justPressed.D) {
+			Cameras.toggleDebugView();
+		}
+		#end
 
 		super.update(elapsed);
 	}

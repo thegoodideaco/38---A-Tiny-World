@@ -4,8 +4,10 @@ import flixel.FlxG;
 import flixel.FlxGame;
 import flixel.FlxState;
 import flixel.addons.nape.FlxNapeSpace;
+import flixel.math.FlxPoint;
 import nape.geom.Vec2;
 import openfl.display.Sprite;
+import openfl.geom.Point;
 import phys.CbTypes;
 import phys.InteractionFilters;
 import system.Cameras;
@@ -51,13 +53,18 @@ class Main extends Sprite {
 
 
 	#if FLX_DEBUG
+
 	function initDebug():Void {
 		FlxG.console.autoPause = false;
-		FlxG.console.registerClass(Vec2);
 		FlxG.console.registerClass(FlxNapeSpace);
 		FlxG.console.registerClass(InteractionFilters);
 		FlxG.console.registerClass(Cameras);
 		FlxG.console.registerClass(Settings);
+		
+		//point classes
+		FlxG.console.registerClass(Point);
+		FlxG.console.registerClass(FlxPoint);
+		FlxG.console.registerClass(Vec2);
 	}
 	#end
 

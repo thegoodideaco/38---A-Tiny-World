@@ -60,22 +60,15 @@ class Baseball extends CircleSprite {
 	override public function update(elapsed:Float):Void {
 		var fromPlanet:Vec2 = body.position.sub(GameObjects.planet.body.position);
 		
-		//set a max length
-		if (fromPlanet.length > GameObjects.planet.radius + 1000){
-			//fromPlanet.length =  GameObjects.planet.radius + 1000;
-			fromPlanet.length = 100;
-			body.applyImpulse(fromPlanet.muleq( -1));
-		}
-		
-		//body.position.set(GameObjects.planet.body.position.add(fromPlanet, true));
+		body.force.set(fromPlanet).muleq(-1).length = fromPlanet.mul(1.5, true).length;
 		
 		
 		trueVelocity.x = orbitDegrees - _oldDegrees;
 		//if it made a complete rotation and reset, we need to adjust the difference
-		if (_oldDegrees > orbitDegrees){
-			if ((_oldDegrees - orbitDegrees) > 180){
+		if (_oldDegrees > orbitDegrees) {
+			if ((_oldDegrees - orbitDegrees) > 180) {
 				trueVelocity.x += 360;
-			}else{
+			} else {
 				
 			}
 		}
@@ -148,8 +141,7 @@ class Baseball extends CircleSprite {
 		return body.velocity.angle;
 	}
 	
-	function get_totalDegrees():Float 
-	{
+	function get_totalDegrees():Float {
 		return (totalDistance / circumfrence) * 360;
 	}
 	

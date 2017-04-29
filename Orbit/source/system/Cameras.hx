@@ -2,6 +2,7 @@ package system;
 import flixel.FlxCamera;
 import flixel.FlxG;
 import flixel.util.FlxColor;
+import helpers.debug.DebugCamera;
 
 /**
  * ...
@@ -10,6 +11,7 @@ import flixel.util.FlxColor;
 class Cameras {
 	public static var skyCam:FlxCamera;
 	public static var planetCam:FlxCamera;
+	public static var debugCam:DebugCamera;
 	public static var uiCam:FlxCamera;
 	
 	public static function init():Void {
@@ -17,6 +19,7 @@ class Cameras {
 		planetCam = new FlxCamera();
 		skyCam = new FlxCamera();
 		uiCam = new FlxCamera();
+		
 		
 		planetCam.bgColor = skyCam.bgColor = uiCam.bgColor = FlxColor.TRANSPARENT;
 		planetCam.antialiasing = skyCam.antialiasing = uiCam.antialiasing = true;
@@ -33,5 +36,27 @@ class Cameras {
 		FlxG.cameras.add(skyCam);
 		FlxG.cameras.add(planetCam);
 		FlxG.cameras.add(uiCam);
+		
+		
+		#if FLX_DEBUG
+		debugCam = new DebugCamera();
+		
+		FlxG.console.registerObject("dcam", debugCam);
+		FlxG.watch.add(Cameras, "debugCam");
+		#end
 	}
+	
+	
+	#if FLX_DEBUG
+
+	public static function toggleDebugView() {
+		if (FlxG.cameras.list.indexOf(debugCam) != -1) {
+			FlxG.cameras.remove(debugCam, false);
+		} else {
+			FlxG.cameras.add(debugCam);
+		}
+		//debugCam.visible = !debugCam.visible;
+	}
+	
+	#end
 }

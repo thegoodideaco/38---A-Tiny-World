@@ -36,7 +36,7 @@ class CircleSprite extends FlxNapeSprite {
 		
 		physicsEnabled = true;
 		
-		
+		body.userData.sprite = this;
 	}
 	
 }

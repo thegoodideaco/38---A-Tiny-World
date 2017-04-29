@@ -31,37 +31,4 @@ class Planet extends CircleSprite {
 	}
 	
 	
-	override public function update(elapsed:Float):Void {
-		
-		attract(2650 / 2);
-		
-		//if (body.angularVel > 0) {
-		//body.angularVel /= 1.5;
-		//}
-		//
-		//var turnStrength:Float = 1;
-		//if (FlxG.keys.pressed.RIGHT) {
-		//body.angularVel += (turnStrength * FlxAngle.TO_RAD);
-		////body.applyAngularImpulse(turnStrength * FlxAngle.TO_RAD);
-		//}
-		//
-		//if (FlxG.keys.pressed.LEFT) {
-		//body.angularVel -= (turnStrength * FlxAngle.TO_RAD);
-		//}
-		
-		super.update(elapsed);
-	}
-	
-	
-	public function attract(Radius:Float):Void {
-		
-		/**
-		 * Apply a force towards the center of each body within range
-		 */
-		var b:Body = GameObjects.ball.body;
-		var f:Vec2 = GameObjects.planet.body.position.sub(GameObjects.ball.body.position);
-		//f.length = Settings.\;
-		b.force.set(f);
-	}
-	
 }
